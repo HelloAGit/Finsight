@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+model Product {
+  id String @id @default(cuid())
+  name String
+  description String
+  targetAudience String
+  keyBenefits String
+  category String
+  price String?
+  landingUrl String
+  brandVoice String
+  isDemo Boolean @default(false)
+  createdAt DateTime @default(now())
+  campaigns Campaign[]
+}
+model Campaign {
+  id String @id @default(cuid())
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  channel String
+  goal String
+  targetAudience String
+  tone String
+  provider String
+  isDemo Boolean @default(false)
+  createdAt DateTime @default(now())
+  drafts Draft[]
+  analytics Analytics[]
+}
+model Draft {
+  id String @id @default(cuid())
+  campaignId String
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  headline String
+  body String
+  cta String
+  hashtags String
+  positioning String
+  status String @default("draft")
+  approvedAt DateTime?
+  updatedAt DateTime @updatedAt
+}
+model Analytics {
+  id String @id @default(cuid())
+  campaignId String
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  impressions Int
+  clicks Int
+  leads Int
+  conversions Int
+  isSynthetic Boolean @default(false)
+  createdAt DateTime @default(now())
+}

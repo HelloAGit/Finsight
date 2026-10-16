@@ -1,5 +1,14 @@
-.env
-*.env.local
+.env*
+!.env.example
 node_modules/
+.next/
+out/
+coverage/
+*.db
+*.db-*
+*.sqlite*
+*.tsbuildinfo
+playwright-report/
+test-results/
 __pycache__/
 .venv/
